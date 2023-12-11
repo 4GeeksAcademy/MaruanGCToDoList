@@ -1,4 +1,3 @@
-
 /* 
 
     You can write your own styles here...
@@ -10,3 +9,15 @@
     import 'relative/path/to/stylesheet.scss';
 
 */
+.Botones {
+  display: none;
+}
+
+div:hover > .Botones {
+  display: block;
+}
+
+.tasks:hover {
+  background-color: rgb(82, 116, 171);
+  font-style: oblique;
+}

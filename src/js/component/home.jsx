@@ -1,26 +1,126 @@
-import React from "react";
+import React, { useState } from "react";
+import "bootstrap-icons/font/bootstrap-icons.css";
+import "font-awesome/css/font-awesome.min.css";
 
-//include images into your bundle
-import rigoImage from "../../img/rigo-baby.jpg";
+let initialArray = [
+  { id: 0, task: "Bañar al perro" },
+  { id: 1, task: "Hacer las compras" },
+  { id: 2, task: "Preparar almuerzo" },
+  { id: 3, task: "Reparar PC" },
+];
+let nextId = initialArray.length;
 
-//create your first component
 const Home = () => {
-	return (
-		<div className="text-center">
-			<h1 className="text-center mt-5">Hello Rigo!</h1>
-			<p>
-				<img src={rigoImage} />
-			</p>
-			<a href="#" className="btn btn-success">
-				If you see this green button... bootstrap is working...
-			</a>
-			<p>
-				Made by{" "}
-				<a href="http://www.4geeksacademy.com">4Geeks Academy</a>, with
-				love!
-			</p>
-		</div>
-	);
+  const [toDo, setTodo] = useState({ id: 0, task: "" });
+  const [editable, setEditable] = useState({ id: 0, task: "" });
+  const [tasks, setTasks] = useState(initialArray);
+
+  const handleSubmit = (e) => {
+    e.preventDefault(); //Previene que cargue nuevamente la pagina cuando el submit
+    if (toDo.task.trim() === "") {
+      alert("No puede ingresar valores en blanco");
+      cancelar();
+      return;
+    }
+    if (tasks.find((item) => toDo.task === item.task)) {
+      alert("Valor duplicado");
+      return;
+    }
+    if (editable.task !== "") {
+      //Si clic edit editable.task tiene el valor de la tarea
+      editTasks();
+      cancelar();
+      return;
+    }
+    const updatedTasks = [...tasks, { id: nextId++, task: toDo.task }];
+    cancelar();
+    return setTasks(updatedTasks);
+  };
+
+  const editTasks = () => {
+    //Editar
+    const editedTasks = tasks.map((item) => {
+      if (item.id === toDo.id) {
+        return toDo;
+      } else return item;
+    });
+    return setTasks(editedTasks);
+  };
+
+  const removeTask = (e) => {
+    //Remover
+    const updatedTasks = tasks.filter((task) => e.id !== task.id);
+    setTasks(updatedTasks);
+  };
+  const cancelar = () => {
+    //Cancelar
+    setEditable({ id: 0, task: "" });
+    setTodo({ id: 0, task: "" });
+  };
+  const edit = (e) => {
+    //Preparar Editar
+    setEditable(e);
+    setTodo(e);
+  };
+  return (
+    <>
+      <div className="container bg-primary mt-3 pb-1">
+        <div className="d-flex justify-content-center">
+          <form onSubmit={handleSubmit}>
+            <label className="text-light">
+              {editable.task == "" ? "Task" : "Edit Task"}
+              <input
+                className={`mt-3 mb-3 ${
+                  editable.task == "" ? "bg-light" : "bg-warning"
+                }`}
+                name="myInput"
+                value={toDo.task}
+                onChange={(e) =>
+                  editable.task === ""
+                    ? setTodo({ id: nextId++, task: e.target.value })
+                    : setTodo({ id: toDo.id, task: e.target.value })
+                }
+              />
+            </label>
+            <button type="submit">+</button>
+          </form>
+          {editable.task == "" ? (
+            ""
+          ) : (
+            <button className="mt-3 mb-3" onClick={cancelar}>
+              Cancelar
+            </button>
+          )}
+        </div>
+        {tasks.map((task) => {
+          return (
+            <div
+              task
+              key={task.id}
+              className="d-flex justify-content-start text-light tasks"
+            >
+              <div className="Botones">
+                <button className="" onClick={() => edit(task)}>
+                  edit
+                </button>
+                <button
+                  className=""
+                  // btn btn-light my-1 ms-1
+                  onClick={() => removeTask(task)}
+                >
+                  x
+                </button>
+              </div>
+              <div className="ms-2">{task.task}</div>
+            </div>
+          );
+        })}
+        <p className="text-start text-info bg-sucess mb-3">
+          #Tasks: {tasks.length}
+        </p>
+      </div>
+    </>
+  );
 };
 
 export default Home;
