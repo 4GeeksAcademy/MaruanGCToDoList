@@ -3,16 +3,16 @@ import "bootstrap-icons/font/bootstrap-icons.css";
 import "font-awesome/css/font-awesome.min.css";
 
 let initialArray = [
-  { id: 0, task: "Bañar al perro" },
-  { id: 1, task: "Hacer las compras" },
-  { id: 2, task: "Preparar almuerzo" },
-  { id: 3, task: "Reparar PC" },
+  { id: 0, task: "Bañar al perro", done: false },
+  { id: 1, task: "Hacer las compras", done: false },
+  { id: 2, task: "Preparar almuerzo", done: false },
+  { id: 3, task: "Reparar PC", done: false },
 ];
 let nextId = initialArray.length;
 
 const Home = () => {
-  const [toDo, setTodo] = useState({ id: 0, task: "" });
-  const [editable, setEditable] = useState({ id: 0, task: "" });
+  const [toDo, setTodo] = useState({ id: 0, task: "", done: false });
+  const [editable, setEditable] = useState({ id: 0, task: "", done: false });
   const [tasks, setTasks] = useState(initialArray);
 
   const handleSubmit = (e) => {
@@ -32,7 +32,10 @@ const Home = () => {
       cancelar();
       return;
     }
-    const updatedTasks = [...tasks, { id: nextId++, task: toDo.task }];
+    const updatedTasks = [
+      ...tasks,
+      { id: nextId++, task: toDo.task, done: false },
+    ];
     cancelar();
     return setTasks(updatedTasks);
   };
@@ -54,8 +57,8 @@ const Home = () => {
   };
   const cancelar = () => {
     //Cancelar
-    setEditable({ id: 0, task: "" });
-    setTodo({ id: 0, task: "" });
+    setEditable({ id: 0, task: "", done: false });
+    setTodo({ id: 0, task: "", done: false });
   };
   const edit = (e) => {
     //Preparar Editar
@@ -77,8 +80,16 @@ const Home = () => {
                 value={toDo.task}
                 onChange={(e) =>
                   editable.task === ""
-                    ? setTodo({ id: nextId++, task: e.target.value })
-                    : setTodo({ id: toDo.id, task: e.target.value })
+                    ? setTodo({
+                        id: nextId++,
+                        task: e.target.value,
+                        done: false,
+                      })
+                    : setTodo({
+                        id: toDo.id,
+                        task: e.target.value,
+                        done: false,
+                      })
                 }
               />
             </label>
