@@ -56,9 +56,9 @@ const Home = () => {
     setTasks(updatedTasks);
   };
   const cancelar = () => {
-    //Cancelar
-    setEditable({ id: 0, task: "" });
-    setTodo({ id: 0, task: "" });
+    //Cancela edicion
+    setEditable({ id: 0, task: "", done: false });
+    setTodo({ id: 0, task: "", done: false });
   };
   const edit = (e) => {
     //Preparar Editar
@@ -68,7 +68,6 @@ const Home = () => {
   //--------------------------------------------------------------------
   const chgDone = (e) => {
     //Cambia valor del tasks.done
-    console.log(e);
     const editedTasks = tasks.map((item) => {
       if (item.id === e.id) {
         return {
@@ -96,8 +95,16 @@ const Home = () => {
                 value={toDo.task}
                 onChange={(e) =>
                   editable.task === ""
-                    ? setTodo({ id: nextId++, task: e.target.value })
-                    : setTodo({ id: toDo.id, task: e.target.value })
+                    ? setTodo({
+                        id: nextId++,
+                        task: e.target.value,
+                        done: false,
+                      })
+                    : setTodo({
+                        id: toDo.id,
+                        task: e.target.value,
+                        done: toDo.done,
+                      })
                 }
               />
             </label>
