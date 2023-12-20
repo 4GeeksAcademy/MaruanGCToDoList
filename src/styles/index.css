@@ -17,6 +17,16 @@ div:hover > .Botones {
   display: block;
 }
 
+.backing {
+  width: 70px;
+}
+.checkbox {
+  margin-left: 15px;
+}
+div:hover > .backing {
+  display: none;
+}
+
 .tasks:hover {
   background-color: rgb(82, 116, 171);
   font-style: oblique;

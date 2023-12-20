@@ -16,8 +16,8 @@ const Home = () => {
   const [tasks, setTasks] = useState(initialArray);
 
   const handleSubmit = (e) => {
-    e.preventDefault(); //Previene que cargue nuevamente la pagina cuando el submit
-    if (toDo.task.trim() === "") {
+    e.preventDefault(); //Previene que cargue nuevamente la pagina cuando el submit;
+    if (toDo.task.trim().length === 0) {
       alert("No puede ingresar valores en blanco");
       cancelar();
       return;
@@ -56,7 +56,7 @@ const Home = () => {
     setTasks(updatedTasks);
   };
   const cancelar = () => {
-    //Cancelar
+    //Cancela edicion
     setEditable({ id: 0, task: "", done: false });
     setTodo({ id: 0, task: "", done: false });
   };
@@ -65,6 +65,21 @@ const Home = () => {
     setEditable(e);
     setTodo(e);
   };
+  //--------------------------------------------------------------------
+  const chgDone = (e) => {
+    //Cambia valor del tasks.done
+    const editedTasks = tasks.map((item) => {
+      if (item.id === e.id) {
+        return {
+          id: e.id,
+          task: e.task,
+          done: e.done,
+        };
+      } else return item;
+    });
+    return setTasks(editedTasks);
+  };
+  //-------------------------------------------------------------------
   return (
     <>
       <div className="container bg-primary mt-3 pb-1">
@@ -88,7 +103,7 @@ const Home = () => {
                     : setTodo({
                         id: toDo.id,
                         task: e.target.value,
-                        done: false,
+                        done: toDo.done,
                       })
                 }
               />
@@ -110,8 +125,9 @@ const Home = () => {
               key={task.id}
               className="d-flex justify-content-start text-light tasks"
             >
+              <div className="backing"></div>
               <div className="Botones">
-                <button className="" onClick={() => edit(task)}>
+                <button className="me-1" onClick={() => edit(task)}>
                   edit
                 </button>
                 <button
@@ -121,6 +137,22 @@ const Home = () => {
                 >
                   x
                 </button>
+              </div>
+              <div className="checkbox">
+                {/* ----------------------------------------------- */}
+                <input
+                  type="checkbox"
+                  namme="checkDone"
+                  checked={task.done}
+                  onChange={(e) =>
+                    chgDone({
+                      id: task.id,
+                      task: task.task,
+                      done: !task.done,
+                    })
+                  }
+                />
+                {/* --------------------------------------------- */}
               </div>
               <div className="ms-2">{task.task}</div>
             </div>
