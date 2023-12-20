@@ -68,6 +68,7 @@ const Home = () => {
   //--------------------------------------------------------------------
   const chgDone = (e) => {
     //Cambia valor del tasks.done
+    console.log(e);
     const editedTasks = tasks.map((item) => {
       if (item.id === e.id) {
         return {
